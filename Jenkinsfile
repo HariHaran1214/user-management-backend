@@ -3,26 +3,15 @@ pipeline {
 
   stages {
 
-    stage('Debug') {
-      steps {
-        sh '''
-        echo "=== WORKSPACE CONTENT ==="
-        ls -la
-        echo "=== POM SEARCH ==="
-        find . -name pom.xml
-        '''
-      }
-    }
-
     stage('Build with Maven') {
       steps {
-        sh '''
+        sh """
         docker run --rm \
-          -v $PWD:/app \
+          -v ${WORKSPACE}:/app \
           -w /app \
           maven:3.9.6-eclipse-temurin-17 \
-          sh -c "ls -la && mvn clean package -DskipTests"
-        '''
+          mvn clean package -DskipTests
+        """
       }
     }
 
