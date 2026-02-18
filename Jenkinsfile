@@ -2,16 +2,26 @@ pipeline {
   agent any
 
   stages {
-    stage('Debug Workspace') {
+
+    stage('Build with Maven') {
       steps {
         sh '''
-        echo "=== LIST ROOT ==="
-        ls -la
-
-        echo "=== FIND POM ==="
-        find . -name "pom.xml"
+        docker run --rm \
+          -v $PWD:/app \
+          -w /app \
+          maven:3.9.6-eclipse-temurin-17 \
+          mvn clean package -DskipTests
         '''
       }
     }
+
+    stage('Docker Build') {
+      steps {
+        sh '''
+        docker build -t user-management-backend .
+        '''
+      }
+    }
+
   }
 }
