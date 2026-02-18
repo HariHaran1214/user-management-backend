@@ -32,7 +32,6 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
         userRepository.deleteById(id);
-        userRepository.findAll();
         return ResponseEntity.noContent().build();
     }
 }
