@@ -3,15 +3,9 @@ pipeline {
 
   stages {
 
-    stage('Build with Maven') {
+    stage('Build') {
       steps {
-        sh """
-        docker run --rm \
-          -v ${WORKSPACE}:/app \
-          -w /app \
-          maven:3.9.6-eclipse-temurin-17 \
-          mvn clean package -DskipTests
-        """
+        sh 'mvn clean package -DskipTests'
       }
     }
 
